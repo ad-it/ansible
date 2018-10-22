@@ -1,0 +1,34 @@
+---
+
+- name: Install Apache and upload My Web Page
+  hosts: all
+  become: yes
+  
+  vars:
+    source_file: ./MyWebSite/index.html
+    media_file1: ./MyWebSite/me.jpg
+    media_file2: ./MyWebSite/tissa.JPG
+    destin_file: /var/www/html
+
+  tasks:
+  - name: Install Apache WebServer
+    yum: name=httpd state=latest
+
+  
+  - name: Copy MyHomePage to servers
+   # copy: src={{ source_file }} dest={{ destin_file }} mode=555
+   # copy: src={{ media_file1 }} dest={{ destin_file }} mode=555
+   # copy: src={{ media_file2 }} dest={{ destin_file }} mode=555
+    copy: src={{ item.src }} dest={{ item.dest }} mode=555
+    with_items:
+      - { src: '{{ source_file }}' , dest: '{{ destin_file }}'  }
+      - { src: '{{ media_file1 }}' , dest: '{{ destin_file }}' }
+      - { src: '{{ media_file2 }}' , dest: '{{ destin_file }}' }
+    notify: Restart Apache
+
+  - name: Start Web Servers and automatic startup
+    service: name=httpd state=started enabled=yes
+    
+  handlers:
+  - name: Restart Apache
+    service: name=httpd state=restarted

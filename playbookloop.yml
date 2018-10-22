@@ -1,0 +1,31 @@
+---
+- name: Loops Playbook
+  hosts: linux1
+  become: yes
+
+  tasks:
+  - name: Say Hello to all
+    debug: msg="Hello {{ item }}"
+    loop:
+        - "Vasya"
+        - "Petya"
+        - "Kolya"
+        - "Masha"
+
+  - name: Loop Until
+    shell: echo -n Z >> myfile.txt && cat myfile.txt
+    register:  output
+    delay: 2
+    retries: 10
+    until: output.stdout.find("ZZZZ") == false
+
+  - name: Print output
+    debug:
+        var: output.stdout
+
+# Install many packages at one time
+#  - name: Install many packages
+#    yum: name= {{ item }} state=installed
+#    with_items:
+#          -python
+#          -tree
