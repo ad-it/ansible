@@ -1,0 +1,32 @@
+---
+# tasks file for deploy_apache_web
+
+- name: Install Apache Web Server
+  yum: name=httpd state=latest
+- debug:
+    msg: "Apache installed"
+
+
+- name: Generate and copy index.j2 as template separately in dest folder
+  template: src=index.j2 dest={{ destin_fldr }}/index.html mode=0555
+  notify:
+     - Restart Apache
+
+- name: Copy MyWebSite to server
+  copy: src={{ item }} dest={{ destin_fldr }} mode=0555
+  loop:
+    - "me.jpg"
+    - "she.jpg"
+    - "tissa.JPG"
+  notify:
+     - Restart Apache
+
+- debug:
+    msg: "Files are copied on server in {{ destin_fldr}} folder, owner {{ owner }}"
+
+- name: Enable automatic Apache start
+  service: name=httpd state=started enabled=yes
+
+- debug:
+    msg: "OS family: {{ ansible_os_family }}"
+

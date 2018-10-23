@@ -1,0 +1,7 @@
+---
+- name: Installing Apache
+  hosts: linux1
+  become: yes
+
+  roles: 
+    - deploy_apache_web  
