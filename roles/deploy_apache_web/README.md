@@ -1,7 +1,10 @@
-Role Name
+Role Name 
 =========
+This role created to learn ansible.
+Here we are able to deploy Apache Web Server wherever we want.
 
-A brief description of the role goes here.
+Lesson from ADV-IT.
+Thanks
 
 Requirements
 ------------
