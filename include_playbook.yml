@@ -1,0 +1,15 @@
+---
+- name: Include playbook
+  hosts: all
+  become: yes
+
+  vars:
+   myvar: "Professional learner"
+
+  tasks:
+  - name: Ping hosts
+    ping:
+
+  - include: create_folders.yml
+
+  - include: create_files.yml   myvar="Variable replacement- Super Professional learner" 

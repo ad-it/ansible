@@ -1,0 +1,13 @@
+---
+- name: Create first folder
+  file:
+      path:  /home/octopus/folder1
+      state: directory
+      mode: 0755
+
+- name: Create second folder
+  file:
+      path: /home/octopus/folder2
+      state: directory
+      mode: 0755
+
