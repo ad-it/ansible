@@ -1,6 +1,6 @@
 ---
 - name: Installing Apache
-  hosts: linux1
+  hosts: "{{ MYHOSTS }}"
   become: yes
 
   roles: 
