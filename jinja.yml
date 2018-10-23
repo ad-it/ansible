@@ -1,0 +1,44 @@
+---
+- name: Installing Apache
+  hosts: linux1
+  become: yes
+  
+  vars:
+    source_fldr: ./MyWebSite
+    destin_fldr: /var/www/html
+  
+  tasks:
+  - name: Install Apache Web Server
+    yum: name=httpd state=latest
+  - debug: 
+      msg: "Apache installed"
+  
+   
+  - name: Generate and copy index.j2 as template separately in dest folder
+    template: src={{ source_fldr }}/index.j2 dest={{ destin_fldr }}/index.html mode=0555
+    notify:
+       - Restart Apache
+
+  - name: Copy MyWebSite to server
+    copy: src={{ source_fldr }}/{{ item }} dest={{ destin_fldr }} mode=0555
+    loop:
+      - "me.jpg"
+      - "she.jpg"
+      - "tissa.JPG"
+    notify:
+       - Restart Apache
+ 
+  - debug:
+      msg: "Files are copied on server in {{ destin_fldr}} folder, owner {{ owner }}"
+
+  - name: Enable automatic Apache start
+    service: name=httpd state=started enabled=yes
+
+  handlers:
+  - name: Restart Apache
+    service: name=httpd state=restarted
+
+  - debug:
+      msg: "Today is {{ weekday }}, time: {{ time }}. OS family: {{ ansible_os_family }}"
+
+  
