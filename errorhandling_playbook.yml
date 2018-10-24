@@ -1,0 +1,25 @@
+---
+- name: Errorrs handling
+  become: yes
+  hosts: all
+  any_errors_fatal: true
+
+  tasks:
+  - name: First task
+    yum: name=treeeee state=latest
+    ignore_errors: yes
+
+  - name: Second task
+   #shell: echo Sleep and Tissa!
+    shell: cat /home/ec2-user/myfile.txt
+    register: results
+   #failed_when: results.rc == 0
+   #failed_when: "'Tissa' in results.stdout"
+    
+ # - debug:
+  #    var: results 
+     
+  - name: Third task
+    shell: echo Hello World!
+
+
